@@ -17,6 +17,10 @@
 
     components: {
       appHeader: Header
+    },
+
+    created() {
+      this.$store.dispatch('initCurrencys');
     }
 
   }

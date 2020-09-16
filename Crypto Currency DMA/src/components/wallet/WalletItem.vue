@@ -4,7 +4,7 @@
 			<div class="card-header header" style="height: 60px;">
 				<ul class="panel-title list-unstyled">
 					<li class="list-inline-item"><h3>{{ currency.name }}</h3></li>
-					<li class="list-inline-item"><small>(Price: {{ currency.price }})</small></li>
+					<li class="list-inline-item"><small>(Price: {{ currency.price }} / {{ currency.quantity }})</small></li>
 				</ul>
 			</div>
 			<div class="card-body">
@@ -17,9 +17,9 @@
 
 					<button
 					class="btn btn-success"
-					@click="buyCurrency"
+					@click="sellCurrency"
 					:disabled="quantity <= 0 || quantity  != quantity.toString().split('.')[0]"
-					>Buy</button>
+					>Sell</button>
 
 				</div>
 			</div>
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+
+	import { mapActions } from 'vuex';
 
 	export default {
 		data() {
@@ -39,15 +41,17 @@
 		props: ['currency'],
 
 		methods: {
+			...mapActions([
+				'sellCurrency'
+				])
 
-			buyCurrency() {
+			sellCurrency() {
 				const order = {
 					currencyId: this.currency.id,
 					currencyPrice: this.currency.price,
 					quantity: this.quantity
 				};
-				this.$store.dispatch('buyCurrency',order);
-				this.quantity = 0;
+				this.sellCurrency();
 			}
 		}
 	}
