@@ -11,19 +11,12 @@
 				<li class="nav-item">
 					<a class="nav-link" href="#" @click="endDay">End Day</a>
 				</li>
-				<li class="nav-item dropdown">
-					<a
-					class="nav-link dropdown-toggle"
-					href="#" id="navbarDropdown"
-					role="button" data-toggle="dropdown"
-					aria-haspopup="true"
-					aria-expanded="false">
-					Save & Load
-				</a>
-				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="#">Save Data</a>
-					<a class="dropdown-item" href="#">Load Data</a>
-				</ul>
+				<li class="nav-item">
+					<a class="nav-link" href="#" @click="saveData">Save Data</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#" @click="loadData">Load Data</a>
+				</li>
 			</li>
 		</ul>
 		<strong style="color: #2B4F81;">Capital: <span class="money">{{ capital }} $</span></strong>
@@ -34,19 +27,37 @@
 <script>
 
 	import { mapActions } from 'vuex';
+	import { mapGetters } from 'vuex';
 	
 	export default {
 
 		methods: {
-			...mapActions([
-				'randomizeCurrencys'
-			]),
+			...mapActions({
+				randomizeCurrencys: 'randomizeCurrencys',
+				loadDBData: 'loadData'
+			}),
 			endDay() {
 				this.randomizeCurrencys();
+			},
+			saveData() {
+				const data = {
+					capitalSave: this.capital,
+					walletCurrencysSave: this.walletCurrencys,
+					currencysSave: this.currencys
+				}
+				this.$http.put('data.json', data);
+			},
+			loadData() {
+				this.loadDBData();
 			}
 		},
 
 		computed: {
+			...mapGetters([
+				'walletCurrencys',
+				'currencys'
+				]),
+
 			capital() {
 				return this.$store.getters.capital;
 			}
