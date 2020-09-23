@@ -5,7 +5,7 @@ const state = {
 
 const mutations = {
 	'BUY_CURRENCY'(state, {currencyId, currencyPrice, quantity}) {
-		const record = state.currencys.find(element => element.id == element.currencyId);
+		const record = state.currencys.find(element => element.id == currencyId);
 		if (record) {
 			record.quantity += quantity;
 		} else {
@@ -17,7 +17,7 @@ const mutations = {
 		state.capital -= currencyPrice * quantity;
 	},
 	'SELL_CURRENCY'(state, {currencyId, currencyPrice, quantity}) {
-		const record = state.currencys.find(element => element.id == element.currencyId);
+		const record = state.currencys.find(element => element.id == currencyId);
 		if(record.quantity > quantity) {
 			record.quantity -= quantity;
 		} else {
@@ -39,7 +39,7 @@ const getters = {
 			const record = getters.currencys.find(element => element.id == currency.id);
 			return {
 				id: currency.id,
-				quantity: currencys.quantity,
+				quantity: currency.quantity,
 				name: record.name,
 				price: record.price
 			}

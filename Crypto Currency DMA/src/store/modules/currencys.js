@@ -9,7 +9,12 @@ const mutations = {
 		state.currencys = currencys;
 	},
 	'RANDOM_CURRENCYS'(state) {
-
+		state.currencys.forEach(currency => {
+			currency.price = Math.round(currency.price * (1.15 + Math.random() - Math.random()));
+			if (currency.price == 0) {
+				currency.price = 1;
+			}
+		});
 	}
 };
 

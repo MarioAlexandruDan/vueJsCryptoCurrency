@@ -13,13 +13,15 @@
 					type="number"
 					class="form-control mr-1"
 					placeholder="Quantity"
-					v-model="quantity">
+					v-model="quantity"
+					:class="{danger: insufficientFunds}">
 
 					<button
 					class="btn btn-success"
 					@click="buyCurrency"
-					:disabled="quantity <= 0 || quantity  != quantity.toString().split('.')[0]"
-					>Buy</button>
+					:disabled="insufficientFunds || quantity <= 0 || quantity  != quantity.toString().split('.')[0]"
+					:class="{'btn-danger': insufficientFunds}"
+					>{{ insufficientFunds ? 'Insufficient Funds' : 'Buy' }}</button>
 
 				</div>
 			</div>
@@ -36,6 +38,15 @@
 			};
 		},
 
+		computed: {
+			capital() {
+				return this.$store.getters.capital;
+			},
+			insufficientFunds() {
+				return this.quantity * this.currency.price > this.capital;
+			}
+		},
+
 		props: ['currency'],
 
 		methods: {
@@ -46,7 +57,7 @@
 					currencyPrice: this.currency.price,
 					quantity: this.quantity
 				};
-				this.$store.dispatch('buyCurrency',order);
+				this.$store.dispatch('buyCurrency', order);
 				this.quantity = 0;
 			}
 		}
@@ -55,8 +66,14 @@
 </script>
 
 <style>
+
 .header {
 	background-color: #F0F8FF;
 	color: #2B4F81;
 }
+
+.danger {
+	border: 1px solid red;
+}
+
 </style>
