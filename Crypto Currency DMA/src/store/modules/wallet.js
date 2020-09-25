@@ -7,7 +7,7 @@ const mutations = {
 	'BUY_CURRENCY'(state, {currencyId, currencyPrice, quantity}) {
 		const record = state.walletCurrencys.find(element => element.id == currencyId);
 		if (record) {
-			record.quantity += quantity;
+			record.quantity = parseInt(record.quantity) +  parseInt(quantity);
 		} else {
 			state.walletCurrencys.push({
 				id: currencyId,
